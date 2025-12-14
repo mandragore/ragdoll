@@ -121,7 +121,7 @@ docker-compose down -v
 
 L'application utilise 2 services Docker :
 
-1. **ollama** : Serveur Ollama avec le modèle Mistral
+1. **ollama** : Serveur Ollama avec le modèle Llama3.2
    - Port interne : 11434
    - Volume : `ollama_data` (modèles persistants)
 
@@ -149,7 +149,7 @@ Modifiez `config.py` pour ajuster :
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 # Modèle LLM
-OLLAMA_MODEL = "mistral"
+OLLAMA_MODEL = "mistral" # si vous avez Mistral 3.2, sinon llama3.2:1
 
 # Nombre de sources à récupérer
 SIMILARITY_TOP_K = 5
