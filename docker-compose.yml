@@ -1,0 +1,47 @@
+services:
+  # Service Ollama
+  ollama:
+    image: ollama/ollama:latest
+    container_name: octoscrub-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "11434:11434"
+    healthcheck:
+      test: [ "CMD", "ollama", "list" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+
+  # Service Application Streamlit
+  app:
+    build: .
+    container_name: octoscrub-app
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    volumes:
+      # Monter le code source pour le développement
+      - ./app.py:/app/app.py
+      - ./config.py:/app/config.py
+      - ./document_indexer.py:/app/document_indexer.py
+      - ./query_engine.py:/app/query_engine.py
+      # Monter les données et la base vectorielle
+      - ./data:/app/data
+      - ./chroma_db:/app/chroma_db
+    ports:
+      - "8501:8501"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8501/_stcore/health" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+volumes:
+  ollama_data:
+    driver: local

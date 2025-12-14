@@ -1,0 +1,22 @@
+# Installation en 2 étapes pour éviter les conflits de dépendances
+
+# Étape 1: Installez d'abord les dépendances lourdes
+torch
+transformers
+sentence-transformers
+
+# Étape 2: Puis les packages LlamaIndex
+llama-index-core
+llama-index-vector-stores-chroma
+llama-index-embeddings-huggingface
+llama-index-llms-ollama
+
+# Base de données vectorielle
+chromadb
+
+# Interface
+streamlit
+
+# Document loaders
+pypdf
+python-docx
